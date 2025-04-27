@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CustomerRelationshipManagment.db;
+using CustomerRelationshipManagment.Interfaces;
 using CustomerRelationshipManagment.Models;
 using CustomerRelationshipManagment.ViewModels;
 
@@ -21,14 +22,15 @@ namespace CustomerRelationshipManagment
     public partial class MainWindow : Window
     {
 
-        private MainWindowViewModel _viewModel;
+        private readonly IMainViewModel _mainViewModel;
 
-        public MainWindow()
+
+        public MainWindow(IMainViewModel mainViewModel)
         {
             InitializeComponent();
 
-            _viewModel = new MainWindowViewModel();
-            DataContext = _viewModel;
+            _mainViewModel = mainViewModel;
+            DataContext = mainViewModel;
 
             // Example data
 
@@ -52,7 +54,7 @@ namespace CustomerRelationshipManagment
 
             // Show the new view
             newLead.ShowDialog();
-            _viewModel.LoadLeads();
+            _mainViewModel.LoadLeads();
         }
 
         private void DetailsButton_Click(object sender, RoutedEventArgs e)

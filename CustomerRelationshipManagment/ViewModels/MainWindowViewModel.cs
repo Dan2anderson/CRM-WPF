@@ -7,20 +7,28 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CustomerRelationshipManagment.Commands;
 using CustomerRelationshipManagment.db;
+using CustomerRelationshipManagment.Interfaces;
 using CustomerRelationshipManagment.Models;
+using CustomerRelationshipManagment.Repositories;
 
 namespace CustomerRelationshipManagment.ViewModels
 {
-    internal class MainWindowViewModel
+    internal class MainWindowViewModel : IMainViewModel
     {
         public ObservableCollection<Lead> Leads { get; set; }
         public ObservableCollection<Client> Clients { get; set; }
 
+        private readonly RepositoryInterface _repository;
+
         public ICommand LeadToClientCommand { get; }
         public ICommand RecordMowingCommand { get; }
 
-        public MainWindowViewModel()
+        public ICommand SaveCommand => throw new NotImplementedException();
+
+        public MainWindowViewModel(RepositoryInterface repository)
         {
+            _repository = repository;
+
             Leads = new ObservableCollection<Lead>();
             Clients = new ObservableCollection<Client>();
             LoadLeads();
@@ -32,23 +40,26 @@ namespace CustomerRelationshipManagment.ViewModels
 
         public void LoadLeads()
         {
-            using (var context = new AppDbContext())
-            {
-                context.Database.EnsureCreated();
+            //using (var context = _repository.getAppDBContext())
+            //{
+            var context = _repository.getAppDBContext();
+            context.Database.EnsureCreated();
                 var leads = context.Leads.ToList();
                 Leads.Clear();
                 foreach (var lead in leads)
                 {
                     Leads.Add(lead);
                 }           
-            }
+            //}
         }
         public void LoadClients()
         {
-            using (var context = new AppDbContext())
-            {
+            //using (var context = _repository.getAppDBContext())
+            //{
+            var context = _repository.getAppDBContext();
                 context.Database.EnsureCreated();
-                var clients = context.Clients
+
+            var clients = _repository.getAppDBContext().Clients
                     .OrderBy(c => c.DateScheduled)
                     .ToList();
                 Clients.Clear();
@@ -56,7 +67,7 @@ namespace CustomerRelationshipManagment.ViewModels
                 {
                     Clients.Add(client);
                 }
-            }
+            //}
         }
 
         public void RecordMowing(Client currentClient)
@@ -85,9 +96,11 @@ namespace CustomerRelationshipManagment.ViewModels
             }
 
 
-            using (var context = new AppDbContext())
-            {
-                var clientInDb = context.Clients.FirstOrDefault(c => c.Id == currentClient.Id);
+            //using (var context = _repository.getAppDBContext())
+            //{
+            var context = _repository.getAppDBContext();
+           
+            var clientInDb = context.Clients.FirstOrDefault(c => c.Id == currentClient.Id);
                 if (clientInDb != null)
                 {
                     clientInDb.DateLastMowed = lastMowed;
@@ -95,7 +108,7 @@ namespace CustomerRelationshipManagment.ViewModels
                     context.SaveChanges();
                    LoadClients();
                 }
-            }
+            //}
 
         }
 
@@ -105,9 +118,11 @@ namespace CustomerRelationshipManagment.ViewModels
             //save client to DB
             //delete Lead from DB
             //refresh UI. 
-            using (var context = new AppDbContext())
-            {
-                context.Database.EnsureCreated();            
+            //using (var context = _repository.getAppDBContext())
+            //{
+            var context = _repository.getAppDBContext();
+          
+            context.Database.EnsureCreated();            
                 if (currentLead != null)
                 {
                     var newClient = new Client
@@ -127,7 +142,7 @@ namespace CustomerRelationshipManagment.ViewModels
                     LoadLeads();
                     LoadClients();
                 }
-            }
+            //}
         }
     }
 }
