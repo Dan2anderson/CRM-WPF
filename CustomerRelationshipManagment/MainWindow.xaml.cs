@@ -31,20 +31,7 @@ namespace CustomerRelationshipManagment
 
             _mainViewModel = mainViewModel;
             DataContext = mainViewModel;
-
-            // Example data
-
-            //using (var context = new AppDbContext())
-            //{
-            //    context.Database.EnsureCreated();
-            //    //var leads = context.Leads.ToList();
-            //    //LeadsDataGrid.ItemsSource = leads;
-
-            //    var clients = context.Clients.ToList();
-            //    ClientDataGrid.ItemsSource = clients;
-
-                
-            //}           
+         
         }
 
         private void NewLead_Click(object sender, RoutedEventArgs e)

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerRelationshipManagment.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250426061359_InitialCreate")]
+    [Migration("20250427074445_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -74,8 +74,8 @@ namespace CustomerRelationshipManagment.Migrations
                             Id = 2,
                             Acres = 2.5,
                             Address = "123 Elm St",
-                            DateLastMowed = new DateOnly(2025, 4, 19),
-                            DateScheduled = new DateOnly(2025, 5, 3),
+                            DateLastMowed = new DateOnly(2025, 4, 20),
+                            DateScheduled = new DateOnly(2025, 5, 4),
                             Frequency = "Weekly",
                             HistoricHoursMowing = "[5,6,4]",
                             Name = "jane Doe",
@@ -130,7 +130,7 @@ namespace CustomerRelationshipManagment.Migrations
                             Id = 1,
                             Acres = 3.0,
                             Address = "456 Oak St",
-                            DateScheduled = new DateOnly(2025, 5, 10),
+                            DateScheduled = new DateOnly(2025, 5, 11),
                             Frequency = "Bi-Weekly",
                             Name = "John Smith",
                             Notes = "Interested in lawn care services",

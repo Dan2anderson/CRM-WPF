@@ -13,7 +13,7 @@ using CustomerRelationshipManagment.Repositories;
 
 namespace CustomerRelationshipManagment.ViewModels
 {
-    internal class MainWindowViewModel : IMainViewModel
+    public class MainWindowViewModel : IMainViewModel
     {
         public ObservableCollection<Lead> Leads { get; set; }
         public ObservableCollection<Client> Clients { get; set; }
@@ -40,34 +40,21 @@ namespace CustomerRelationshipManagment.ViewModels
 
         public void LoadLeads()
         {
-            //using (var context = _repository.getAppDBContext())
-            //{
-            var context = _repository.getAppDBContext();
-            context.Database.EnsureCreated();
-                var leads = context.Leads.ToList();
-                Leads.Clear();
-                foreach (var lead in leads)
-                {
-                    Leads.Add(lead);
-                }           
-            //}
+            var leads = _repository.getLeads();
+            Leads.Clear();
+            foreach (var lead in leads)
+            {
+                Leads.Add(lead);
+            }
         }
         public void LoadClients()
         {
-            //using (var context = _repository.getAppDBContext())
-            //{
-            var context = _repository.getAppDBContext();
-                context.Database.EnsureCreated();
-
-            var clients = _repository.getAppDBContext().Clients
-                    .OrderBy(c => c.DateScheduled)
-                    .ToList();
-                Clients.Clear();
-                foreach (var client in clients)
-                {
-                    Clients.Add(client);
-                }
-            //}
+            var clients = _repository.getClients();
+            Clients.Clear();
+            foreach (var client in clients)
+            {
+                Clients.Add(client);
+            }
         }
 
         public void RecordMowing(Client currentClient)
@@ -96,53 +83,41 @@ namespace CustomerRelationshipManagment.ViewModels
             }
 
 
-            //using (var context = _repository.getAppDBContext())
-            //{
-            var context = _repository.getAppDBContext();
-           
-            var clientInDb = context.Clients.FirstOrDefault(c => c.Id == currentClient.Id);
-                if (clientInDb != null)
-                {
-                    clientInDb.DateLastMowed = lastMowed;
-                    clientInDb.DateScheduled = lastMowed?.AddDays(daysToAdd);
-                    context.SaveChanges();
-                   LoadClients();
-                }
-            //}
+
+
+            var clientInDb = _repository.getClientById(currentClient.Id);
+            if (clientInDb != null)
+            {
+                clientInDb.DateLastMowed = lastMowed;
+                clientInDb.DateScheduled = lastMowed?.AddDays(daysToAdd);
+                _repository.saveChanges();
+                LoadClients();
+            }
 
         }
 
         public void LeadToClient(Lead currentLead)
         {
-            //parse lead to client
-            //save client to DB
-            //delete Lead from DB
-            //refresh UI. 
-            //using (var context = _repository.getAppDBContext())
-            //{
-            var context = _repository.getAppDBContext();
-          
-            context.Database.EnsureCreated();            
-                if (currentLead != null)
+
+
+            if (currentLead != null)
+            {
+                var newClient = new Client
                 {
-                    var newClient = new Client
-                    {
-                        Name = currentLead.Name,
-                        Phone = currentLead.Phone,
-                        Address = currentLead.Address,
-                        Frequency = currentLead.Frequency,
-                        Price = currentLead.QuotePrice,
-                        Acres = currentLead.Acres,
-                        DateScheduled = currentLead.DateScheduled,
-                        Notes = currentLead.Notes
-                    };
-                    context.Clients.Add(newClient);
-                    context.Leads.Remove(currentLead);
-                    context.SaveChanges();
-                    LoadLeads();
-                    LoadClients();
-                }
-            //}
+                    Name = currentLead.Name,
+                    Phone = currentLead.Phone,
+                    Address = currentLead.Address,
+                    Frequency = currentLead.Frequency,
+                    Price = currentLead.QuotePrice,
+                    Acres = currentLead.Acres,
+                    DateScheduled = currentLead.DateScheduled,
+                    Notes = currentLead.Notes
+                };
+                _repository.addClient(newClient);
+                _repository.deleteLead(currentLead);
+                LoadLeads();
+                LoadClients();
+            }
         }
     }
 }

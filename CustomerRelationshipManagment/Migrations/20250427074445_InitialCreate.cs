@@ -57,12 +57,12 @@ namespace CustomerRelationshipManagment.Migrations
             migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Acres", "Address", "DateLastMowed", "DateScheduled", "Frequency", "HistoricHoursMowing", "Name", "Notes", "Phone", "Price", "RecentHoursMowing" },
-                values: new object[] { 2, 2.5, "123 Elm St", new DateOnly(2025, 4, 19), new DateOnly(2025, 5, 3), "Weekly", "[5,6,4]", "jane Doe", "First-time customer", "123-456-7890", 150.00m, 5 });
+                values: new object[] { 2, 2.5, "123 Elm St", new DateOnly(2025, 4, 20), new DateOnly(2025, 5, 4), "Weekly", "[5,6,4]", "jane Doe", "First-time customer", "123-456-7890", 150.00m, 5 });
 
             migrationBuilder.InsertData(
                 table: "Leads",
                 columns: new[] { "Id", "Acres", "Address", "DateScheduled", "Frequency", "Name", "Notes", "Phone", "QuotePrice" },
-                values: new object[] { 1, 3.0, "456 Oak St", new DateOnly(2025, 5, 10), "Bi-Weekly", "John Smith", "Interested in lawn care services", "987-654-3210", 200.00m });
+                values: new object[] { 1, 3.0, "456 Oak St", new DateOnly(2025, 5, 11), "Bi-Weekly", "John Smith", "Interested in lawn care services", "987-654-3210", 200.00m });
         }
 
         /// <inheritdoc />

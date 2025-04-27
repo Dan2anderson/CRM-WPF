@@ -16,7 +16,7 @@ namespace CustomerRelationshipManagment.db
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=CRMDatabase2.db");
+            optionsBuilder.UseSqlite("Data Source=CRMDatabase3.db");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
